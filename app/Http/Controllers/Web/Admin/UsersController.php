@@ -31,4 +31,13 @@ class UsersController extends Controller
             'password' => 'required|string|max:255',
         ]);
     }
+
+    public function index()
+    {
+        $users = User::where('role', User::ROLE_USER)->paginate(10);
+
+        return request()->wantsJson()
+            ? $users
+            : view('admin.users.index');
+    }
 }
