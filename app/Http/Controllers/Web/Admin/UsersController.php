@@ -20,14 +20,16 @@ class UsersController extends Controller
             'password' => Hash::make(request('password')),
         ]);
 
-        return $user;
+        return request()->wantsJson()
+            ? $user
+            : redirect()->route('admin.users.index');
     }
 
     public function validator($data)
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|max:255',
         ]);
     }
@@ -38,6 +40,11 @@ class UsersController extends Controller
 
         return request()->wantsJson()
             ? $users
-            : view('admin.users.index');
+            : view('admin.users.index', compact('users'));
+    }
+
+    public function create()
+    {
+        return view('admin.users.create');
     }
 }

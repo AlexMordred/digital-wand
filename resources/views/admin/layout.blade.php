@@ -7,9 +7,7 @@
             <h3>Меню</h3>
 
             <nav class="nav flex-column">
-                <a class="nav-link active" href="#">Active</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="{{ route('admin.users.index') }}">Пользователи</a>
             </nav>
         </div>
 
