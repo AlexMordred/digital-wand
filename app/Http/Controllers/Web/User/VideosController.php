@@ -45,4 +45,13 @@ class VideosController extends Controller
 
         return $validator;
     }
+
+    public function index()
+    {
+        $videos = Video::where('user_id', auth()->id())->paginate(10);
+
+        return request()->wantsJson()
+            ? $videos
+            : view('user.videos.index', compact('videos'));
+    }
 }
