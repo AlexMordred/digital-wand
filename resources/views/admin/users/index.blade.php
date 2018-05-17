@@ -1,4 +1,4 @@
-@extends('user.layout')
+@extends('admin.layout')
 
 @section('title')
 Панель администратора - Пользователи
@@ -8,17 +8,15 @@
 @section('main')
 <table class="table stripped">
     <thead>
-        {{-- <th>Оригинальное название файла</th>
-        <th>Дата загрузки</th>
-        <th>Статус</th> --}}
+        <th>Имя</th>
+        <th>E-Mail</th>
     </thead>
 
     <tbody>
-        {{-- @forelse ($videos as $video)
+        @forelse ($users as $user)
             <tr>
-                <td>{{ $video->original_filename }}</td>
-                <td>{{ $video->created_at->format('d.m.Y, H:i:s') }} UTC</td>
-                <td>{{ $video->reviewed ? 'Проверено' : 'На модерации' }}</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
             </tr>
         @empty
             <tr>
@@ -26,9 +24,9 @@
                     Вы не загрузили ни одного видео.
                 </td>
             </tr>
-        @endforelse --}}
+        @endforelse
     </tbody>
 </table>
 
-{{-- {{ $videos->links() }} --}}
+{{ $users->links() }}
 @endsection
