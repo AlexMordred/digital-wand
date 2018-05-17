@@ -6,13 +6,23 @@
         <td>{{ data.reviewed ? 'Да' : 'Нет' }}</td>
 
         <td>
-            <a v-show="! data.reviewed" href="">Удалить</a>
+            <a v-show="! data.reviewed"
+                href=""
+                @click.prevent="deleteVideo">Удалить</a>
         </td>
     </tr>
 </template>
 
 <script>
 export default {
-    props: ['data']
+    props: ['data'],
+
+    methods: {
+        deleteVideo() {
+            axios.delete(`/admin/videos/${this.data.id}`);
+
+            this.$emit('deleted');
+        }
+    }
 }
 </script>

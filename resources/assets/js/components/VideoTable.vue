@@ -38,7 +38,8 @@
             <tbody v-if="videos.length">
                 <tr v-for="(video, index) in videos"
                     :key="index"
-                    is="video-table-row" :data="video"></tr>
+                    is="video-table-row" :data="video"
+                    @deleted="fetchData"></tr>
             </tbody>
 
             <tbody v-else>
