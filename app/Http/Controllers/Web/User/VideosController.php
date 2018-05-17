@@ -13,14 +13,17 @@ class VideosController extends Controller
     {
         $this->validator(request()->all())->validate();
 
-        $path = request()->file('video')->store('videos');
+        $path = request()->file('video')->store('videos', 'public');
 
         $video = Video::create([
             'user_id' => auth()->id(),
             'file_path' => $path,
         ]);
 
-        return $video;
+        return request()->wantsJson()
+            ? $video
+            : redirect()->route('user.videos.index')
+                ->with('status', 'Видео было успешно загружено!');
     }
 
     public function validator($data)
@@ -53,5 +56,10 @@ class VideosController extends Controller
         return request()->wantsJson()
             ? $videos
             : view('user.videos.index', compact('videos'));
+    }
+
+    public function create()
+    {
+        return view('user.videos.create');
     }
 }

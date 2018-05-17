@@ -35,7 +35,7 @@ class VideoStoreTest extends TestCase
         $this->assertEquals($this->user->id, $video['user_id']);
         $this->assertEquals($videoPath, $video['file_path']);
 
-        Storage::assertExists($videoPath);
+        Storage::disk('public')->assertExists($videoPath);
     }
 
     /** @test */
