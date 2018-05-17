@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
 class DebugDataSeeder extends Seeder
 {
@@ -13,6 +14,8 @@ class DebugDataSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+
         // Пользователи
         User::truncate();
 
@@ -36,5 +39,7 @@ class DebugDataSeeder extends Seeder
             'password' => Hash::make('qwerty'),
             'role' => User::ROLE_USER,
         ]);
+
+        Schema::enableForeignKeyConstraints();
     }
 }
