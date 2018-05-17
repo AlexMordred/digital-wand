@@ -4,6 +4,9 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use App\Video;
 
 class AdminVideoBrowseTest extends TestCase
 {
@@ -26,20 +29,32 @@ class AdminVideoBrowseTest extends TestCase
     /** @test */
     public function an_admin_can_delete_a_video()
     {
-        // // Create 10 videos with "sent = false"
-        // factory('App\Video', 10)->create();
-        // // Create one video with "sent = true"
-        // factory('App\Video')->create(['sent' => true]);
+        Storage::fake('public');
 
-        // $results = $this->actingAs($this->admin)
-        //     ->getJson(route('admin.videos.index') . '?sent=1')
-        //     ->assertStatus(200)
-        //     ->json();
+        // Upload a fake video file as a user
+        $data = [];
 
-        // // Only one video should be returned
-        // $this->assertCount(1, $results['data']);
-        // $this->assertEquals(1, $results['total']);
+        $data = [
+            'video' => $file = UploadedFile::fake()->create('video.mkv', 100)
+        ];
 
-        // TODO: verify the file was deleted
+        $this->actingAs($this->user)
+            ->postJson(route('user.videos.store'), $data)
+            ->assertStatus(201);
+
+        $video = Video::first();
+
+        Storage::disk('public')->assertExists($video->file_path);
+
+        // Delete the video as an admin
+        $this->actingAs($this->admin)
+            ->deleteJson(route('admin.videos.destroy', $video))
+            ->assertStatus(200);
+
+        // Assert the video was deleted from the DB
+        $this->assertDatabaseMissing('videos', ['id' => $video->id]);
+
+        // Assert the video file was deleted
+        Storage::disk('public')->assertMissing($video->file_path);
     }
 }

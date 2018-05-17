@@ -28,6 +28,13 @@ class VideosController extends Controller
             : view('admin.videos.index', compact('videos'));
     }
 
+    public function destroy(Video $video)
+    {
+        $video->delete();
+
+        return response()->json([]);
+    }
+
     public function setReviewed(Video $video)
     {
         $video->reviewed = true;

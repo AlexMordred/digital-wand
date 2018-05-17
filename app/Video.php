@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Video extends Model
 {
@@ -16,4 +17,15 @@ class Video extends Model
         'reviewed' => 'boolean',
         'sent' => 'boolean',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($model) {
+            if (Storage::disk('public')->exists($model->file_path)) {
+                Storage::disk('public')->delete($model->file_path);
+            }
+        });
+    }
 }
