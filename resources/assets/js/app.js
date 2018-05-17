@@ -15,7 +15,9 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('vue-paginator', require('./components/Paginator.vue'));
+Vue.component('video-table-row', require('./components/VideoTableRow.vue'));
+Vue.component('video-table', require('./components/VideoTable.vue'));
 
 const app = new Vue({
     el: '#app'

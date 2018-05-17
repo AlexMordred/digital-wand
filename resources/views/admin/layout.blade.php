@@ -8,6 +8,8 @@
 
             <nav class="nav flex-column">
                 <a class="nav-link" href="{{ route('admin.users.index') }}">Пользователи</a>
+
+                <a class="nav-link" href="{{ route('admin.videos.index') }}">Видео</a>
             </nav>
         </div>
 
