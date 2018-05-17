@@ -11,4 +11,9 @@ class Video extends Model
         'file_path',
         'original_filename',
     ];
+
+    protected $casts = [
+        'reviewed' => 'boolean',
+        'sent' => 'boolean',
+    ];
 }

@@ -27,4 +27,12 @@ class VideosController extends Controller
             ? $videos
             : view('admin.videos.index', compact('videos'));
     }
+
+    public function setReviewed(Video $video)
+    {
+        $video->reviewed = true;
+        $video->save();
+
+        return response()->json([]);
+    }
 }
