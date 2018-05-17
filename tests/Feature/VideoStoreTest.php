@@ -20,7 +20,7 @@ class VideoStoreTest extends TestCase
         $this->assertEquals(0, Video::count());
 
         $data = [
-            'video' => $file = UploadedFile::fake()->create('video.mkv', 100)
+            'video' => $file = UploadedFile::fake()->create($filename = 'video.mkv', 100)
         ];
 
         $this->actingAs($this->user)
@@ -33,6 +33,7 @@ class VideoStoreTest extends TestCase
         $videoPath = 'videos/' . $file->hashName();
 
         $this->assertEquals($this->user->id, $video['user_id']);
+        $this->assertEquals($filename, $video['original_filename']);
         $this->assertEquals($videoPath, $video['file_path']);
 
         Storage::disk('public')->assertExists($videoPath);

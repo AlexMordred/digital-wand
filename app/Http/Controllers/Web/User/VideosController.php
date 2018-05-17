@@ -13,11 +13,14 @@ class VideosController extends Controller
     {
         $this->validator(request()->all())->validate();
 
-        $path = request()->file('video')->store('videos', 'public');
+        $file = request()->file('video');
+
+        $path = $file->store('videos', 'public');
 
         $video = Video::create([
             'user_id' => auth()->id(),
             'file_path' => $path,
+            'original_filename' => $file->getClientOriginalName()
         ]);
 
         return request()->wantsJson()

@@ -8,6 +8,7 @@ $factory->define(App\Video::class, function (Faker $faker) {
             return factory('App\User')->create()->id;
         },
         'file_path' => $faker->word . '.mkv',
+        'original_filename' => $faker->word . '.mkv',
         'sent' => false,
         'reviewed' => false,
     ];

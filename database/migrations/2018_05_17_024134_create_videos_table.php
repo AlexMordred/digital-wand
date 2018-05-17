@@ -17,6 +17,7 @@ class CreateVideosTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->string('file_path');
+            $table->string('original_filename');
             $table->boolean('sent')->default(false);
             $table->boolean('reviewed')->default(false);
             $table->timestamps();

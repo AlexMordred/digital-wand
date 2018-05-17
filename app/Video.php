@@ -9,5 +9,6 @@ class Video extends Model
     protected $fillable = [
         'user_id',
         'file_path',
+        'original_filename',
     ];
 }
