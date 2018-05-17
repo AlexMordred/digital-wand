@@ -47525,6 +47525,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['data'],
@@ -47534,6 +47543,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.delete('/admin/videos/' + this.data.id);
 
             this.$emit('deleted');
+        },
+        markAsReviewed: function markAsReviewed() {
+            axios.post('/admin/videos/' + this.data.id + '/reviewed');
+
+            this.$emit('reviewed');
         }
     }
 });
@@ -47553,7 +47567,34 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.data.sent ? "Да" : "Нет"))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.data.reviewed ? "Да" : "Нет"))]),
+    _c("td", [
+      _vm._v(
+        "\n        " + _vm._s(_vm.data.reviewed ? "Да" : "Нет") + "\n\n        "
+      ),
+      _c("p", [
+        _c(
+          "a",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.data.reviewed,
+                expression: "! data.reviewed"
+              }
+            ],
+            attrs: { href: "" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.markAsReviewed($event)
+              }
+            }
+          },
+          [_vm._v("Отмодерировать")]
+        )
+      ])
+    ]),
     _vm._v(" "),
     _c("td", [
       _c(
@@ -47701,6 +47742,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47756,6 +47798,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.page = page;
 
             this.fetchData();
+        },
+        markAsReviewed: function markAsReviewed(index) {
+            this.videos[index].reviewed = true;
         }
     }
 });
@@ -47884,7 +47929,12 @@ var render = function() {
                   key: index,
                   tag: "tr",
                   attrs: { data: video },
-                  on: { deleted: _vm.fetchData }
+                  on: {
+                    deleted: _vm.fetchData,
+                    reviewed: function($event) {
+                      _vm.markAsReviewed(index)
+                    }
+                  }
                 })
               })
             )

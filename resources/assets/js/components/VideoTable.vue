@@ -39,7 +39,8 @@
                 <tr v-for="(video, index) in videos"
                     :key="index"
                     is="video-table-row" :data="video"
-                    @deleted="fetchData"></tr>
+                    @deleted="fetchData"
+                    @reviewed="markAsReviewed(index)"></tr>
             </tbody>
 
             <tbody v-else>
@@ -108,6 +109,10 @@ export default {
             this.page = page;
 
             this.fetchData();
+        },
+
+        markAsReviewed(index) {
+            this.videos[index].reviewed = true;
         }
     }
 }
