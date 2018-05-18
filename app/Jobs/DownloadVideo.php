@@ -31,6 +31,22 @@ class DownloadVideo implements ShouldQueue
      */
     public function handle()
     {
-        // TODO
+        $dir = storage_path('app/downloaded');
+
+        if (!file_exists($dir)) {
+            mkdir($dir);
+        }
+
+        $path = $dir . '/' . pathinfo($this->video['file_path'])['basename'];
+
+        $client = new \GuzzleHttp\Client();
+
+        // Download the video
+        $client->get($this->video['download_url'], ['sink' => $path]);
+
+        // Notify the main app, mark the video as "sent"
+        $client->post(route('api.videos.mark-as-sent', $this->video['id']));
+
+        // Enqueue a job to convert the video
     }
 }
