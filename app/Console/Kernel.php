@@ -25,7 +25,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('videos:email:unreviewed')
-                 ->twiceDaily(0, 12);
+            ->twiceDaily(0, 12);
+
+        $schedule->command('videos:list')
+            ->everyMinute();
     }
 
     /**

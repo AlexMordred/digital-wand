@@ -18,6 +18,10 @@ class Video extends Model
         'sent' => 'boolean',
     ];
 
+    protected $appends = [
+        'download_url',
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -27,5 +31,10 @@ class Video extends Model
                 Storage::disk('public')->delete($model->file_path);
             }
         });
+    }
+
+    public function getDownloadUrlAttribute()
+    {
+        return asset('storage/' . $this->file_path);
     }
 }
