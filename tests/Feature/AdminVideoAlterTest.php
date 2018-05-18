@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use App\Video;
 
-class AdminVideoBrowseTest extends TestCase
+class AdminVideoAlterTest extends TestCase
 {
     use RefreshDatabase;
 
