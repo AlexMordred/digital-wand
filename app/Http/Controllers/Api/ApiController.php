@@ -25,4 +25,12 @@ class ApiController extends Controller
 
         return $videos;
     }
+
+    public function markAsSent(Video $video)
+    {
+        $video->sent = true;
+        $video->save();
+
+        return response()->json([]);
+    }
 }

@@ -44,4 +44,17 @@ class ApiTest extends TestCase
         $this->assertEquals($videos[3]['id'], $results[0]['id']);
         $this->assertEquals($videos[4]['id'], $results[1]['id']);
     }
+
+    /** @test */
+    public function marking_a_video_as_sent()
+    {
+        $video = factory('App\Video')->create();
+
+        $this->assertFalse($video->sent);
+
+        $this->postJson(route('api.videos.mark-as-sent', $video))
+            ->assertStatus(200);
+
+        $this->assertTrue($video->fresh()->sent);
+    }
 }

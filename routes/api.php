@@ -13,3 +13,4 @@
 */
 
 Route::get('/videos', 'ApiController@videos')->name('api.videos');
+Route::post('/videos/{video}/mark-as-sent', 'ApiController@markAsSent')->name('api.videos.mark-as-sent');
