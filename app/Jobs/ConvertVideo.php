@@ -7,8 +7,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Linkthrow\Ffmpeg\Classes\FFMPEG;
 
-class DownloadVideo implements ShouldQueue
+class ConvertVideo implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,23 +32,24 @@ class DownloadVideo implements ShouldQueue
      */
     public function handle()
     {
-        $dir = storage_path('app/downloaded');
+        $downloadedPath = storage_path('app/downloaded') . '/' . pathinfo($this->video['file_path'])['basename'];
+
+        $convertedPath = storage_path('app/converted') . '/' . pathinfo($this->video['file_path'])['filename'] . '.mp4';
+
+        $dir = storage_path('app/converted');
 
         if (!file_exists($dir)) {
             mkdir($dir);
         }
 
-        $path = $dir . '/' . pathinfo($this->video['file_path'])['basename'];
+        // Convert the video
+        FFMPEG::convert()
+            ->input('"' . $downloadedPath . '"')
+            ->bitrate(300, 'video')
+            ->output('"' . $convertedPath . '"')
+            ->go();
 
-        $client = new \GuzzleHttp\Client();
-
-        // Download the video
-        $client->get($this->video['download_url'], ['sink' => $path]);
-
-        // Notify the main app, mark the video as "sent"
-        // $client->post(route('api.videos.mark-as-sent', $this->video['id']));
-
-        // Enqueue a job to convert the video
-        ConvertVideo::dispatch($this->video)->onQueue('converting');
+        // Delete the original file
+        unlink($downloadedPath);
     }
 }
